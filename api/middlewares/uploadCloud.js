@@ -9,7 +9,7 @@ cloudinary.config({
 });
 
 const multerUpload = multer({
-    storage: multer.memoryStorage(), // lưu vào RAM, không lưu vào disk
+    storage: multer.memoryStorage(),
     limits: { fileSize: 5 * 1024 * 1024 }, // giới hạn 5MB
     fileFilter: (req, file, cb) => {
         // chỉ chấp nhận file ảnh
@@ -22,16 +22,16 @@ const multerUpload = multer({
 
 module.exports = {
     single: async (req, res, next) => {
-        if (!req.file) return next(); // không có file → bỏ qua, để handler tự xử lý
+        if (!req.file) return next();
 
         try {
             const result = await new Promise((resolve, reject) => {
                 const stream = cloudinary.uploader.upload_stream(
-                    { folder: "products" }, // lưu vào thư mục products trên cloudinary
+                    { folder: "products" },
                     (error, result) =>
                         error ? reject(error) : resolve(result),
                 );
-                Readable.from(req.file.buffer).pipe(stream); // stream buffer lên cloudinary
+                Readable.from(req.file.buffer).pipe(stream);
             });
 
             req.file.path = result.secure_url;

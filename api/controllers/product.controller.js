@@ -1,6 +1,5 @@
 const cloudinary = require("cloudinary").v2;
 
-// 3.1 - Tạo sản phẩm
 const createProduct = async (req, res) => {
     if (!req.file) {
         return res
@@ -17,7 +16,6 @@ const createProduct = async (req, res) => {
     });
 };
 
-// 3.2 - Upload nhiều ảnh
 const uploadGallery = async (req, res) => {
     if (!req.files?.length) {
         return res.status(400).json({ message: "Vui lòng chọn ít nhất 1 ảnh" });
@@ -31,7 +29,6 @@ const uploadGallery = async (req, res) => {
     });
 };
 
-// 3.3 - Cập nhật sản phẩm
 const updateProduct = async (req, res) => {
     const { id } = req.params;
 
@@ -42,7 +39,6 @@ const updateProduct = async (req, res) => {
 
     const { oldImageUrl, ...fields } = req.body;
 
-    // nếu có file mới → dùng URL mới, không có → giữ URL cũ từ body
     const imageUrl = req.file ? req.file.path : oldImageUrl;
 
     return res.status(200).json({
@@ -51,7 +47,6 @@ const updateProduct = async (req, res) => {
     });
 };
 
-// 3.4 - Xoá ảnh
 const deleteImage = async (req, res) => {
     const { publicId } = req.query;
 
